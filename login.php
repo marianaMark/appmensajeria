@@ -29,7 +29,7 @@ if (isset($_SESSION['unique_id'])) {
       <div class="link">Aún no te has registrado?<a href="index.php">Regístrate acá</a></div>
     </section>
   </div>
-.
+  <script src="javascript/pass-show-hide.js"></script>
   <script src="javascript/login.js"></script>
 
 </body>

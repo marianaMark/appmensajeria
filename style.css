@@ -11,7 +11,7 @@ body{
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: #fc7d1c;
+  background: #a442c2;
   padding: 0 10px;
 }
 .wrapper{
@@ -37,7 +37,7 @@ body{
   margin: 20px 0;
 }
 .form form .error-text{
-  color: #721c24;
+  color: #b44954;
   padding: 8px 10px;
   text-align: center;
   border-radius: 5px;

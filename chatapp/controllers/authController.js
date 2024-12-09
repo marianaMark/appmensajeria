@@ -4,6 +4,10 @@ const db = require('../config/db');
 
 const register = (req, res) => {
     const { nombre, email, contraseña, telefono } = req.body; // Recibe el teléfono
+    
+    if (!nombre || !email || !contraseña || !telefono) {
+        return res.status(400).json({ error: 'Todos los campos son obligatorios' });
+    }
 
     const hash = bcrypt.hashSync(contraseña, 10);
 
@@ -11,8 +15,12 @@ const register = (req, res) => {
         INSERT INTO usuarios (nombre, email, contraseña, telefono, fecha_registro)
         VALUES (?, ?, ?, ?, NOW())
     `;
-    db.query(sql, [nombre, email, hash, telefono], (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
+    db.query(sql, [nombre, email, hash, telefono], (err) => {
+        if (err) 
+            {
+                console.error(err);
+                return res.status(500).json({ error: 'Error al registrar el usuario' });
+            }
         res.status(201).json({ message: 'Usuario registrado' });
     });
 };
@@ -24,8 +32,13 @@ const login = (req, res) => {
 
     const sql = `SELECT * FROM usuarios WHERE email = ?`;
     db.query(sql, [email], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        if (results.length === 0) return res.status(404).json({ message: 'Usuario no encontrado' });
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Error en el servidor' });
+        }
+         if (results.length === 0) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+             }
 
         const user = results[0];
         const isMatch = bcrypt.compareSync(contraseña, user.contraseña);
@@ -44,8 +57,11 @@ const getUsers = (req, res) => {
     const sql = `SELECT id, nombre, email, telefono FROM usuarios WHERE id != ?`;
 
     db.query(sql, [userId], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(results);
+        if (err) {
+            console.error(err);
+             return res.status(500).json({ error: err.message });
+     }
+             res.json(results);
     });
 };
 

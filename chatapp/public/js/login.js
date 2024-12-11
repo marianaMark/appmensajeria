@@ -22,6 +22,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     const password = document.getElementById('register-password').value;
     const phone = document.getElementById('phone').value; // Captura el teléfono
 
+    try {
     const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -34,10 +35,17 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     });
 
     const result = await response.json();
-    alert(result.message);
+    
     if (response.ok) {
+        alert('Registro exitoso. Ahora inicia sesión.');
         document.getElementById('login-container').style.display = 'block';
         document.getElementById('register-container').style.display = 'none';
+    }else {
+        alert(result.error || 'Error en el registro');
+    }
+    } catch (error) {
+        console.error('Error en el registro:', error);
+        alert('No se pudo registrar. Por favor, intenta nuevamente.');
     }
 });
 
@@ -49,18 +57,26 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, contraseña: password }),
-    });
+    try {
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: email,
+                contraseña: password,
+            }),
+        });
 
-    const result = await response.json();
-    if (response.ok) {
-        localStorage.setItem('token', result.token); // Guarda el token
-        window.location.href = '/'; // Redirige al chat
-    } else {
-        alert(result.message);
+        const result = await response.json();
+        if (response.ok) {
+            localStorage.setItem('token', result.token); // Guarda el token
+            window.location.href = '/'; // Redirige al chat
+        } else {
+            alert(result.message|| 'Error en el inicio de sesión');
+        }
+    } catch (error) {
+        console.error('Error en el inicio de sesión:', error);
+        alert('No se pudo iniciar sesión. Por favor, intenta nuevamente.');
     }
 });
 

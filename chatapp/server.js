@@ -7,12 +7,14 @@ const authRoutes = require('./routes/authRoutes');
 
 const app = express(); // Inicializa app
 const server = http.createServer(app); // Crea el servidor HTTP
-const io = new Server(server);// Inicializa Socket.IO
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json()); // Middleware para JSON
+
 
 //rutas
 app.use('/api/auth', authRoutes);
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 // Configuración para servir archivos estáticos
@@ -25,21 +27,14 @@ app.get('/', (req, res) => {
 });
 
 // Configuración de Socket.IO
+const io = new Server(server);// Inicializa Socket.IO
 io.on('connection', (socket) => {
     console.log('Usuario conectado', socket.id);
-
-    socket.on('chatMessage', (msg) => {
-        console.log('Mensaje recibido:', msg);
-        io.emit('message', msg); // Envía el mensaje a todos los clientes
-    });
-    socket.on('typing', (isTyping) => {
-        socket.broadcast.emit('userTyping', isTyping); // Notifica a los demás
-    });
-
     socket.on('disconnect', () => {
         console.log('Usuario desconectado');
     });
 });
+app.get('/favicon.ico', (req, res) => res.status(204));
 
 
 

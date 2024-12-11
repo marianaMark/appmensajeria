@@ -11,7 +11,7 @@ if (!token) {
 // Obtener contactos
 const loadContacts = async () => {
     const response = await fetch('/api/auth/users', {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
     const contacts = await response.json();
     const contactsList = document.getElementById('contacts-list');

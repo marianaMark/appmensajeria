@@ -7,15 +7,12 @@ if (!isset($_SESSION['unique_id'])) {
     exit();
 }
 
-// Verificar si se envió el user_id correctamente
 if (!isset($_GET['user_id']) || empty($_GET['user_id'])) {
     header("location: users.php");
     exit();
 }
 
 $user_id = mysqli_real_escape_string($conn, $_GET['user_id']);
-
-// Obtener los datos del usuario con el user_id proporcionado
 $sql = mysqli_query($conn, "SELECT * FROM users WHERE unique_id = {$user_id}");
 if (mysqli_num_rows($sql) > 0) {
     $row = mysqli_fetch_assoc($sql);
@@ -24,10 +21,8 @@ if (mysqli_num_rows($sql) > 0) {
     exit();
 }
 
-// Obtener el estado premium del usuario actual
 $user_query = mysqli_query($conn, "SELECT is_premium, membership_expiry FROM users WHERE unique_id = {$_SESSION['unique_id']}");
 if ($user_info = mysqli_fetch_assoc($user_query)) {
-    // Validar si la membresía premium ha expirado
     if (!empty($user_info['membership_expiry']) && $user_info['membership_expiry'] < date('Y-m-d')) {
         mysqli_query($conn, "UPDATE users SET is_premium = 0 WHERE unique_id = {$_SESSION['unique_id']}");
         $is_premium = 0;
@@ -67,8 +62,8 @@ if ($user_info = mysqli_fetch_assoc($user_query)) {
 
                 <!-- Si el usuario es premium, se muestra el botón para enviar archivos -->
                 <?php if ($is_premium): ?>
-                    <label for="file-input" class="file-icon">
-                        <i class=""></i>
+                    <label for="file-input" class="file-icon" style="cursor: pointer;">
+                        <i class="fas fa-paperclip" ></i>
                     </label>
                     <input id="file-input" type="file" name="file" style="display: none;">
                 <?php endif; ?>

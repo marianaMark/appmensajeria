@@ -3,6 +3,7 @@ incoming_id = form.querySelector(".incoming_id").value,
 inputField = form.querySelector(".input-field"),
 sendBtn = form.querySelector("button"),
 chatBox = document.querySelector(".chat-box");
+const fileInput = form.querySelector("#file-input");
 
 form.onsubmit = (e)=>{
     e.preventDefault();

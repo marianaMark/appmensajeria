@@ -18,7 +18,7 @@ if (!isset($_SESSION['unique_id'])) {
             $row = mysqli_fetch_assoc($sql);
           }
           ?>
-          <img src="php/images/<?php echo $row['img']; ?>" alt="">
+          <img src="php/imagenes/<?php echo $row['img']; ?>" alt="">
           <div class="details">
             <span><?php echo $row['fname'] . " " . $row['lname'] ?></span>
             <p><?php echo $row['status']; ?></p>
@@ -36,8 +36,30 @@ if (!isset($_SESSION['unique_id'])) {
         <input type="text" placeholder="Introduzca el nombre para buscar...">
         <button><i class="fas fa-search"></i></button>
       </div>
+
+      <!-- Botón para crear grupo -->
+      <div class="create-group">
+        <button id="create-group-btn"><i class="fas fa-plus"></i></button>
+      </div>
+
+      <!-- Lista de usuarios o grupos -->
       <div class="users-list">
       </div>
+
+      <!-- Modal para crear un grupo -->
+      <div id="create-group-modal" class="modal">
+        <div class="modal-content">
+          <h3>Crear un nuevo grupo</h3>
+          <input type="text" id="group-name" placeholder="Nombre del grupo" required />
+          <div id="user-list">
+            <!-- Lista de usuarios cargados dinámicamente -->
+          </div>
+          <button id="save-group-btn">Guardar Grupo</button>
+          <button id="cancel-group-btn">Cancelar</button>
+        </div>
+      </div>
+
+      
     </section>
   </div>
 
@@ -94,6 +116,28 @@ body {
 .details {
   margin-left: 10px;
 }
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 8px;
+}
+
 </style>
 </body>
 

@@ -19,7 +19,7 @@ if (isset($_SESSION['unique_id'])) {
                                 </div>';
             } else {
                 $output .= '<div class="chat incoming">
-                                <img src="php/images/' . $row['img'] . '" alt="">
+                                <img src="php/imagenes/' . $row['img'] . '" alt="">
                                 <div class="details">
                                     <p>' . $row['msg'] . '</p>
                                 </div>
